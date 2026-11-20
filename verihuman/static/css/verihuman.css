@@ -1406,6 +1406,20 @@ main { flex: 1; }
 .chunk-bar-row .track > span { display: block; height: 100%; background: var(--spoof); border-radius: 99px; }
 .chunk-bar-row .val { text-align: right; font-variant-numeric: tabular-nums; color: var(--text); }
 
+.acoustic-section { border-top: 1px solid var(--line-soft); padding: 18px 22px 0; }
+.acoustic-summary { margin-bottom: 18px; }
+.acoustic-summary .panel-head h2 { font-size: 15px; }
+.acoustic-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.acoustic-factor { margin: 0; }
+.acoustic-factor .panel-head h3 { font-size: 14px; }
+.acoustic-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin: 12px 0; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.acoustic-metrics div { background: var(--card); padding: 8px 10px; min-width: 0; }
+.acoustic-metrics span, .acoustic-metrics b { display: block; overflow-wrap: anywhere; }
+.acoustic-metrics span { color: var(--muted); font-size: 10px; }
+.acoustic-metrics b { margin-top: 2px; font-size: 11.5px; font-weight: 550; }
+.acoustic-notes { margin: 12px 0 0 18px; }
+.acoustic-disclaimer { margin: 16px 0 18px; }
+
 /* ------------------------------------------------------------ report ---- */
 
 .report-header {
@@ -1707,6 +1721,7 @@ main { flex: 1; }
   .result-foot { flex-direction: column; align-items: flex-start; }
   .chunk-bar-row { grid-template-columns: 20px 70px 1fr 50px; gap: 7px; }
   .meta-grid { grid-template-columns: 1fr; }
+  .acoustic-grid { grid-template-columns: 1fr; }
   .doc-cards { grid-template-columns: 1fr; }
   .profile-head .ph-actions { margin-left: 0; width: 100%; }
   .filters { flex-direction: column; align-items: stretch; }

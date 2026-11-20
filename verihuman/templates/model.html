@@ -12,6 +12,21 @@
 <dt>BONAFIDE threshold</dt><dd>{{ info.bonafide_threshold if info.bonafide_threshold is not none else 'Not available' }}</dd>
 <dt>SPOOF threshold</dt><dd>{{ info.spoof_threshold if info.spoof_threshold is not none else 'Not available' }}</dd>
 </dl></section>
+<section class="panel"><h2>Audio features used by the model</h2><p class="section-sub">These signal-processing features describe voice characteristics, timing-related changes, energy, and spectral detail. The active feature set is shown above.</p>
+<div class="features-grid">
+<article class="feature-card"><h3>MFCC</h3><p>Captures voice characteristics and frequency patterns.</p></article>
+<article class="feature-card"><h3>Delta MFCC</h3><p>Captures changes in voice characteristics over time.</p></article>
+<article class="feature-card"><h3>Delta-Delta MFCC</h3><p>Captures changes in those changes.</p></article>
+<article class="feature-card"><h3>Spectral Centroid</h3><p>Measures the brightness of sound.</p></article>
+<article class="feature-card"><h3>Spectral Bandwidth</h3><p>Measures the spread of sound frequencies.</p></article>
+<article class="feature-card"><h3>Spectral Rolloff</h3><p>Measures the frequency below which most spectral energy lies.</p></article>
+<article class="feature-card"><h3>Zero Crossing Rate</h3><p>Measures how frequently the audio signal changes sign.</p></article>
+<article class="feature-card"><h3>RMS Energy</h3><p>Measures audio energy and intensity.</p></article>
+<article class="feature-card"><h3>Spectral Flatness</h3><p>Helps distinguish tonal and noise-like sounds.</p></article>
+<article class="feature-card"><h3>Spectral Flux</h3><p>Measures changes in the spectrum between frames.</p></article>
+<article class="feature-card"><h3>Spectral Contrast</h3><p>Captures differences between spectral peaks and valleys.</p></article>
+<article class="feature-card"><h3>Chroma</h3><p>Captures energy distribution across musical pitch classes.</p></article>
+</div></section>
 <section class="panel"><h2>Holdout evaluation</h2>
 {% if info.eval_metrics %}
 <dl class="detail-list">{% for name, value in info.eval_metrics.items() %}

@@ -86,12 +86,14 @@ class Analysis(db.Model):
     channels = db.Column(db.Integer)
 
     # Actual values returned by the existing model pipeline
-    prediction = db.Column(db.String(16), nullable=False, index=True)  # BONAFIDE/SPOOF/UNCERTAIN
+    prediction = db.Column(db.String(16), nullable=False, index=True)  # final BONAFIDE/SPOOF/UNCERTAIN
+    model_prediction = db.Column(db.String(16))  # the trained model's own prediction
     spoof_score = db.Column(db.Float)          # 0..1, calibrated as returned
     raw_spoof_score = db.Column(db.Float)      # 0..1, raw model score as returned
-    confidence = db.Column(db.Float)           # as returned (may be None)
+    confidence = db.Column(db.Float)           # final confidence as returned
     confidence_label = db.Column(db.String(32))
     reason = db.Column(db.Text)
+    acoustic_json = db.Column(db.Text)         # post-hoc human-voice analysis (JSON)
     bonafide_threshold = db.Column(db.Float)
     spoof_threshold = db.Column(db.Float)
     chunk_count = db.Column(db.Integer)
@@ -148,6 +150,25 @@ class Analysis(db.Model):
             return value if isinstance(value, list) else []
         except (TypeError, ValueError):
             return []
+
+    @property
+    def acoustic(self) -> dict:
+        """Post-hoc human-voice analysis stored as JSON, if present."""
+        if not self.acoustic_json:
+            return {}
+        try:
+            value = json.loads(self.acoustic_json)
+            return value if isinstance(value, dict) else {}
+        except (TypeError, ValueError):
+            return {}
+
+    @property
+    def acoustic_factors(self) -> list[dict]:
+        """Factors in stable display order."""
+        analysis = self.acoustic
+        factors = analysis.get("factors") or {}
+        order = ("breathing", "micro_pauses", "spectral", "voice_continuity")
+        return [factors[key] for key in order if isinstance(factors.get(key), dict)]
 
     @property
     def report_id(self) -> str:

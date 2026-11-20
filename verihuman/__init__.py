@@ -98,6 +98,7 @@ def init_website(app: Flask, model_bundle=None, model_error=None) -> None:
         from . import models  # noqa: F401  (register tables)
 
         db.create_all()
+        _upgrade_existing_schema(app)
         from .models import User
 
         guest = db.session.execute(
@@ -112,7 +113,6 @@ def init_website(app: Flask, model_bundle=None, model_error=None) -> None:
         elif not guest.retain_audio:
             guest.retain_audio = True
             db.session.commit()
-
     @app.before_request
     def open_guest_workspace():
         if not current_user.is_authenticated:
@@ -166,3 +166,29 @@ def init_website(app: Flask, model_bundle=None, model_error=None) -> None:
             "brand_tagline": "Trust Every Voice. Verify Every Sound.",
             "current_year": datetime.now(timezone.utc).year,
         }
+
+
+def _upgrade_existing_schema(app: Flask) -> None:
+    """Add website columns introduced after an existing SQLite database."""
+    from sqlalchemy import inspect, text
+
+    required_columns = {
+        "model_prediction": "VARCHAR(16)",
+        "acoustic_json": "TEXT",
+    }
+    existing_columns = {
+        column["name"]
+        for column in inspect(db.engine).get_columns("vh_analyses")
+    }
+    missing_columns = [
+        (name, sql_type)
+        for name, sql_type in required_columns.items()
+        if name not in existing_columns
+    ]
+    for name, sql_type in missing_columns:
+        db.session.execute(
+            text(f'ALTER TABLE "vh_analyses" ADD COLUMN "{name}" {sql_type}')
+        )
+        app.logger.info("Added missing database column vh_analyses.%s", name)
+    if missing_columns:
+        db.session.commit()

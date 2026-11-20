@@ -787,6 +787,66 @@
     );
   }
 
+  function acousticMarkup(result) {
+    var analysis = result.acoustic_analysis;
+    if (!analysis) return "";
+
+    var fusion = analysis.fusion || {};
+    var quality = analysis.quality || {};
+    var factors = analysis.factors || {};
+    var order = ["breathing", "micro_pauses", "spectral", "voice_continuity"];
+    var cards = order.map(function (key) {
+      var factor = factors[key] || {};
+      var metrics = factor.metrics || {};
+      var metricMarkup = Object.keys(metrics).map(function (name) {
+        return "<div><span>" + esc(name) + "</span><b>" + esc(metrics[name]) + "</b></div>";
+      }).join("");
+      var score = factor.score == null ? null : Number(factor.score);
+      var confidence = factor.confidence == null ? null : Number(factor.confidence);
+      var scoreText = score == null || !isFinite(score) ? "Not available" : score.toFixed(1) + "/100";
+      var confidenceText = confidence == null || !isFinite(confidence)
+        ? "Not available"
+        : confidence.toFixed(1) + "%";
+      return (
+        '<article class="panel acoustic-factor">' +
+        '<div class="panel-head"><h3>' + esc(factor.title || key.replace("_", " ")) + '</h3>' +
+        '<span class="vh-hint">' + esc(factor.status_label || factor.status || "Inconclusive") + '</span></div>' +
+        '<dl class="detail-list">' +
+        '<dt>Acoustic score</dt><dd>' + esc(scoreText) + '</dd>' +
+        '<dt>Factor confidence</dt><dd>' + esc(confidenceText) + '</dd>' +
+        '</dl>' +
+        (metricMarkup ? '<div class="acoustic-metrics">' + metricMarkup + '</div>' : "") +
+        '<p class="text-muted">' + esc(factor.explanation || "No explanation was returned.") + '</p>' +
+        (factor.caveat ? '<p class="vh-hint">' + esc(factor.caveat) + '</p>' : "") +
+        '</article>'
+      );
+    }).join("");
+
+    var qualityNotes = Array.isArray(quality.notes)
+      ? quality.notes.map(function (note) { return "<li>" + esc(note) + "</li>"; }).join("")
+      : "";
+    var finalText = fusion.final_prediction || result.prediction || "UNCERTAIN";
+    var qualityText = quality.status ? quality.status.replace(/_/g, " ") : "unavailable";
+
+    return (
+      '<section class="acoustic-section">' +
+      '<div class="panel acoustic-summary">' +
+      '<div class="panel-head"><h2>Human voice characteristics</h2><span class="vh-hint">Supplementary acoustic evidence</span></div>' +
+      '<p class="text-muted">' + esc(fusion.reason || analysis.disclaimer || "Acoustic evidence is supplementary and not proof of origin.") + '</p>' +
+      '<div class="result-metrics">' +
+      '<div>Final assessment<b>' + esc(finalText) + '</b></div>' +
+      '<div>Acoustic direction<b>' + esc(fusion.evidence_direction || "inconclusive") + '</b></div>' +
+      '<div>Agreement<b>' + esc(fusion.agreement || "inconclusive") + '</b></div>' +
+      '<div>Quality<b>' + esc(qualityText) + '</b></div>' +
+      '</div>' +
+      (qualityNotes ? '<ul class="vh-hint acoustic-notes">' + qualityNotes + '</ul>' : "") +
+      '</div>' +
+      '<div class="acoustic-grid">' + cards + '</div>' +
+      '<p class="vh-hint acoustic-disclaimer">' + esc(analysis.disclaimer || "Acoustic cues are measurements, not proof of human or AI origin.") + '</p>' +
+      '</section>'
+    );
+  }
+
   function resultMarkup(result) {
     var verdict = verdictOf(result);
     var score = pct(result.spoof_score);
@@ -850,6 +910,7 @@
       "</div></div>" +
 
       chunkMarkup(result) +
+      acousticMarkup(result) +
 
       '<div class="result-foot">' +
       '<span class="left">' + VH.iconMarkup("clock", 14) + esc(stamp) +

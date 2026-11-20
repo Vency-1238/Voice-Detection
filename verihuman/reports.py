@@ -46,6 +46,7 @@ CSV_COLUMNS = [
     ("sample_rate", "Sample rate (Hz)"),
     ("channels", "Channels"),
     ("prediction", "Prediction"),
+    ("model_prediction", "Trained model prediction"),
     ("spoof_score", "Spoof score (0-1)"),
     ("raw_spoof_score", "Raw spoof score (0-1)"),
     ("confidence", "Confidence (0-1)"),
@@ -56,6 +57,18 @@ CSV_COLUMNS = [
     ("model_name", "Model"),
     ("feature_set", "Feature set"),
     ("n_features", "Feature count"),
+    ("acoustic_direction", "Acoustic evidence direction"),
+    ("acoustic_agreement", "Model/acoustic agreement"),
+    ("acoustic_quality", "Acoustic recording quality"),
+    ("breathing_status", "Breathing status"),
+    ("breathing_score", "Breathing score (0-100)"),
+    ("micro_pauses_status", "Micro-pauses status"),
+    ("micro_pauses_score", "Micro-pauses score (0-100)"),
+    ("spectral_status", "Spectral status"),
+    ("spectral_score", "Spectral score (0-100)"),
+    ("voice_continuity_status", "Voice continuity status"),
+    ("voice_continuity_score", "Voice continuity score (0-100)"),
+    ("acoustic_reason", "Acoustic explanation"),
 ]
 
 
@@ -235,6 +248,60 @@ def build_pdf(analysis, user, info: dict) -> bytes:
         kv_table(model_rows),
     ]
 
+    acoustic = analysis.acoustic
+    if acoustic:
+        fusion = acoustic.get("fusion") or {}
+        quality = acoustic.get("quality") or {}
+        acoustic_rows = [
+            ("Final assessment", fusion.get("final_prediction", analysis.prediction)),
+            ("Trained model prediction", fusion.get("model_prediction", analysis.model_prediction or "Not available")),
+            ("Evidence direction", fusion.get("evidence_direction", "Not available")),
+            ("Model/acoustic agreement", fusion.get("agreement", "Not available")),
+            ("Recording quality", quality.get("status", "Not available")),
+            ("Acoustic explanation", fusion.get("reason", "Not available")),
+        ]
+        story.extend([
+            Spacer(1, 8),
+            Paragraph("Human voice characteristics", h2),
+            kv_table(acoustic_rows),
+        ])
+        factor_rows = []
+        for factor in analysis.acoustic_factors:
+            score = (
+                f"{factor.get('score')}/100"
+                if factor.get("score") is not None
+                else "Not available"
+            )
+            metrics = "; ".join(
+                f"{name}: {value}"
+                for name, value in (factor.get("metrics") or {}).items()
+            )
+            detail = (
+                f"<b>{factor.get('status_label') or factor.get('status') or 'Inconclusive'}</b>"
+                f"<br/>Score: {score}"
+                f"<br/>{metrics or 'No measurements available.'}"
+                f"<br/>{factor.get('explanation') or 'No explanation was returned.'}"
+            )
+            factor_rows.append([
+                Paragraph(str(factor.get("title", "Acoustic factor")), small),
+                Paragraph(detail, body),
+            ])
+        if factor_rows:
+            table = Table(factor_rows, colWidths=[45 * mm, 139 * mm])
+            table.setStyle(TableStyle([
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LINEBELOW", (0, 0), (-1, -2), 0.4, LINE),
+                ("TOPPADDING", (0, 0), (-1, -1), 5),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+            ]))
+            story.append(table)
+        story.append(Paragraph(
+            str(acoustic.get("disclaimer") or
+                "Acoustic cues are measurements, not proof of human or AI origin."),
+            small,
+        ))
+
     chunks = analysis.chunks
     if chunks:
         header = ["#", "Start (s)", "Length (s)", "Spoof score", "Weight"]
@@ -350,6 +417,32 @@ def build_csv(analyses) -> str:
                 row.append(analysis.report_id)
             elif key == "created_at":
                 row.append(_fmt_dt(analysis.created_at))
+            elif key in {
+                "acoustic_direction", "acoustic_agreement", "acoustic_quality",
+                "breathing_status", "breathing_score", "micro_pauses_status",
+                "micro_pauses_score", "spectral_status", "spectral_score",
+                "voice_continuity_status", "voice_continuity_score",
+                "acoustic_reason",
+            }:
+                acoustic = analysis.acoustic
+                fusion = acoustic.get("fusion") or {}
+                quality = acoustic.get("quality") or {}
+                factors = acoustic.get("factors") or {}
+                factor_key = key.rsplit("_", 1)[0]
+                factor = factors.get(factor_key) or {}
+                if key == "acoustic_direction":
+                    row.append(fusion.get("evidence_direction", "Not available"))
+                elif key == "acoustic_agreement":
+                    row.append(fusion.get("agreement", "Not available"))
+                elif key == "acoustic_quality":
+                    row.append(quality.get("status", "Not available"))
+                elif key == "acoustic_reason":
+                    row.append(fusion.get("reason", "Not available"))
+                elif key.endswith("_status"):
+                    row.append(factor.get("status_label") or factor.get("status") or "Not available")
+                else:
+                    value = factor.get("score")
+                    row.append(value if value is not None else "Not available")
             else:
                 row.append(getattr(analysis, key, ""))
         writer.writerow(row)
