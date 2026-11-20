@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+{% from 'partials/macros.html' import logo, icon, theme_toggle, flash_messages, verdict_badge, field with context %}
+<html lang="en" data-theme="{{ nav_theme|default('dark') }}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
+  <title>{% if page_title %}{{ page_title }} · VeriHuman{% else %}VeriHuman{% endif %}</title>
+  <meta name="description" content="Sign in to VeriHuman — AI-powered audio authenticity and deepfake detection." />
+  <meta name="theme-color" content="#09090B" />
+  <link rel="icon" href="{{ url_for('website.static', filename='brand/favicon.svg') }}" type="image/svg+xml" />
+  <link rel="preload" href="{{ url_for('website.static', filename='fonts/inter-latin.woff2') }}" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="{{ url_for('website.static', filename='vendor/bootstrap.min.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('website.static', filename='css/verihuman.css') }}" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("vh-theme");
+        if (stored === "light" || stored === "dark") {
+          document.documentElement.setAttribute("data-theme", stored);
+        }
+      } catch (error) {}
+    })();
+  </script>
+</head>
+<body class="vh-public">
+
+  <div class="auth-wrap">
+    <aside class="auth-aside">
+      <div>
+        {{ logo(28, True, url_for('website.landing')) }}
+        <div class="auth-quote" style="margin-top:56px">
+          <p class="eyebrow" style="margin-bottom:12px">Audio authenticity</p>
+          <h2>Not every voice<br />is what it seems.</h2>
+          <p>
+            Verify speech recordings with a calibrated detector trained on the
+            ASVspoof 2019 Logical Access corpus, then keep a forensic record of every result.
+          </p>
+          <div class="auth-bullets">
+            <div class="auth-bullet">
+              <span class="b-ico">{{ icon('audio-lines', 14) }}</span>
+              <span>Chunk-level analysis across the whole recording.</span>
+            </div>
+            <div class="auth-bullet">
+              <span class="b-ico">{{ icon('file-text', 14) }}</span>
+              <span>Downloadable PDF and CSV forensic reports.</span>
+            </div>
+            <div class="auth-bullet">
+              <span class="b-ico">{{ icon('shield-check', 14) }}</span>
+              <span>Private history — only you can open your reports.</span>
+            </div>
+            <div class="auth-bullet">
+              <span class="b-ico">{{ icon('database', 14) }}</span>
+              <span>Audio is not stored unless you explicitly opt in.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="auth-side-foot">
+        Automated detection is an estimate, not definitive proof of authenticity.
+      </p>
+    </aside>
+
+    <section class="auth-main">
+      <div class="auth-card">
+        <div class="auth-top">
+          <a class="vh-btn vh-btn-ghost vh-btn-sm" href="{{ url_for('website.landing') }}">
+            {{ icon('arrow-left', 15) }} Back to site
+          </a>
+          {{ theme_toggle() }}
+        </div>
+
+        {{ flash_messages() }}
+
+        {% block auth_content %}{% endblock %}
+      </div>
+    </section>
+  </div>
+
+  <script src="{{ url_for('website.static', filename='vendor/lucide.min.js') }}"></script>
+  <script src="{{ url_for('website.static', filename='js/app.js') }}"></script>
+</body>
+</html>

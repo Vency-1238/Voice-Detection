@@ -1,0 +1,47 @@
+{% extends "base_app.html" %}{% from 'partials/macros.html' import icon %}
+{% block content %}<div class="page-head"><div><p class="eyebrow">Detection workspace</p><h1>Detect audio</h1><p class="page-sub">Upload supported audio and review the model's actual response.</p></div></div>
+<div id="detect-root" data-api="/api/analyze" data-max-files="{{ max_files }}" data-max-mb="{{ max_file_mb }}">
+  <div class="detect-mode-tabs" role="tablist" aria-label="Audio source">
+    <button type="button" class="detect-mode active" data-detect-mode="upload" role="tab" aria-selected="true">{{ icon('upload-cloud',16) }} Upload audio</button>
+    <button type="button" class="detect-mode" data-detect-mode="record" role="tab" aria-selected="false">{{ icon('mic',16) }} Record voice</button>
+  </div>
+  <div class="detect-layout">
+    <section class="panel upload-panel" data-detect-panel="upload">
+      <div class="dropzone" id="dropzone" tabindex="0">
+        <input id="file-input" type="file" name="files" multiple hidden accept=".wav,.flac,.mp3,.ogg,.webm,.m4a,.oga">
+        <div class="empty-icon">{{ icon('upload-cloud',28) }}</div>
+        <h2>Drop audio files here</h2><p>or choose files from your device</p>
+        <button class="vh-btn vh-btn-outline" id="browse-btn" type="button">Browse files</button>
+        <small>WAV · FLAC · MP3 · OGG · up to {{ max_file_mb }} MB each</small>
+      </div>
+      <div id="file-count" hidden>0</div>
+      <div id="queue-empty" class="text-muted">No files selected.</div>
+      <div id="file-queue" hidden></div>
+    </section>
+    <section class="panel recorder-panel" data-detect-panel="record" hidden>
+      <div class="panel-head"><div><h2>Record your voice</h2><p class="text-muted">Your microphone is converted locally to 16 kHz mono WAV.</p></div><span class="record-status-dot" id="record-status-dot"></span></div>
+      <div class="recorder-stage">
+        <button type="button" class="record-button" id="record-btn" aria-pressed="false">{{ icon('mic',24) }}</button>
+        <strong id="record-time">0:00</strong>
+        <span id="recorder-status" class="text-muted" role="status">Ready to record</span>
+        <div class="level-meter"><span id="level-fill"></span></div>
+      </div>
+      <div id="recording-preview" class="recording-preview" hidden>
+        <audio id="recording-audio" controls></audio>
+        <div class="page-actions">
+          <button type="button" class="vh-btn vh-btn-primary" id="analyse-recording-btn">{{ icon('sparkles',16) }} Analyze recording</button>
+          <a type="button" class="vh-btn vh-btn-outline" id="download-recording-btn" download>{{ icon('download',16) }} Download WAV</a>
+          <button type="button" class="vh-btn vh-btn-ghost" id="discard-recording-btn">Discard</button>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="detect-actions">
+    <button class="vh-btn vh-btn-primary" id="analyze-btn" disabled>Analyze audio</button>
+    <button class="vh-btn vh-btn-ghost" id="clear-btn" disabled>Clear all</button>
+  </div>
+  <div id="detect-error" class="vh-alert vh-alert-danger" hidden></div>
+  <section id="player-card" class="panel" hidden><div class="panel-head"><h2 id="player-file"></h2><span id="player-sub"></span></div><div id="waveform"></div><button class="icon-btn" id="play-btn" type="button" aria-label="Play preview">{{ icon('play',16) }}</button><span id="player-time"></span><audio id="audio-player" controls hidden></audio><div id="player-meta"></div></section>
+  <section id="results-panel" class="panel" hidden><div class="panel-head"><h2>Results</h2><span id="results-summary"></span></div><div id="results"></div></section>
+</div>{% endblock %}
+{% block scripts %}<script src="{{ url_for('website.static', filename='vendor/wavesurfer.min.js') }}?v=download-visible"></script><script src="{{ url_for('website.static', filename='js/detect.js') }}?v=download-visible"></script>{% endblock %}

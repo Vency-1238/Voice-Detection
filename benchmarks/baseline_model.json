@@ -1,0 +1,54 @@
+{
+  "model": "audio_deepfake_model.joblib",
+  "model_size_mb": 72.17,
+  "load_ms": 225.0,
+  "trained_on_files": 35700,
+  "threshold": 0.7118342364405523,
+  "metrics": {
+    "tune": {
+      "threshold": 0.7118342364405523,
+      "accuracy": 0.9944,
+      "precision": 0.9978,
+      "recall": 0.9961,
+      "f1": 0.9969,
+      "roc_auc": 0.9994,
+      "fpr": 0.0196,
+      "fnr": 0.0039,
+      "tp": 11104,
+      "tn": 1249,
+      "fp": 25,
+      "fn": 44,
+      "n": 12422
+    },
+    "test": {
+      "threshold": 0.7118342364405523,
+      "accuracy": 0.9959,
+      "precision": 0.9986,
+      "recall": 0.9969,
+      "f1": 0.9977,
+      "roc_auc": 0.9998,
+      "fpr": 0.0126,
+      "fnr": 0.0031,
+      "tp": 11113,
+      "tn": 1258,
+      "fp": 16,
+      "fn": 35,
+      "n": 12422
+    }
+  },
+  "speakers": 20,
+  "speaker_fpr_mean": 0.0202,
+  "speaker_fpr_max": 0.1039,
+  "speaker_fnr_mean": 0.0038,
+  "speaker_fnr_max": 0.0097,
+  "predict_proba_ms": {
+    "1": 8.41,
+    "8": 7.75,
+    "32": 8.939,
+    "128": 12.408
+  },
+  "end_to_end_ms_mean": 37.7,
+  "end_to_end_ms_median": 35.1,
+  "cold_start_ms": 1780.1,
+  "rss_mb": 346.9
+}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+{% from 'partials/macros.html' import logo, icon, theme_toggle, flash_messages, verdict_badge, field with context %}
+<html lang="en" data-theme="{{ nav_theme|default('dark') }}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
+  <title>{% if page_title %}{{ page_title }} · VeriHuman{% else %}VeriHuman{% endif %}</title>
+  <meta name="description" content="VeriHuman — AI-powered audio authenticity and deepfake detection platform." />
+  <meta name="theme-color" content="#09090B" />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="{{ url_for('website.static', filename='brand/favicon.svg') }}" type="image/svg+xml" />
+  <link rel="preload" href="{{ url_for('website.static', filename='fonts/inter-latin.woff2') }}" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="{{ url_for('website.static', filename='vendor/bootstrap.min.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('website.static', filename='css/verihuman.css') }}" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("vh-theme");
+        if (stored === "light" || stored === "dark") {
+          document.documentElement.setAttribute("data-theme", stored);
+        }
+      } catch (error) {}
+    })();
+  </script>
+</head>
+<body class="vh-app">
+
+  {% set nav_counts = namespace() %}
+  <aside class="vh-sidebar" id="sidebar" aria-label="Dashboard navigation">
+    <div class="sidebar-head">
+      {{ logo(25, True, url_for('website.dashboard'), 'sidebar-logo') }}
+      <button type="button" class="icon-btn sidebar-close" id="sidebar-close" aria-label="Close navigation">
+        {{ icon('x', 18) }}
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-group-label">Workspace</p>
+      <a class="nav-item {{ 'active' if active == 'overview' }}" href="{{ url_for('website.dashboard') }}">
+        {{ icon('layout-dashboard', 17) }} Overview
+      </a>
+      <a class="nav-item {{ 'active' if active == 'detect' }}" href="{{ url_for('website.detect') }}">
+        {{ icon('audio-lines', 17) }} Detect Audio
+      </a>
+      <a class="nav-item {{ 'active' if active == 'history' }}" href="{{ url_for('website.history') }}">
+        {{ icon('history', 17) }} Analysis History
+        {% if current_user.total_analyses %}<span class="nav-count">{{ current_user.total_analyses }}</span>{% endif %}
+      </a>
+      <a class="nav-item {{ 'active' if active == 'reports' }}" href="{{ url_for('website.reports') }}">
+        {{ icon('file-text', 17) }} Reports
+      </a>
+
+      <p class="nav-group-label">Platform</p>
+      <a class="nav-item {{ 'active' if active == 'model' }}" href="{{ url_for('website.model_page') }}">
+        {{ icon('cpu', 17) }} Model Information
+      </a>
+      <a class="nav-item {{ 'active' if active == 'help' }}" href="{{ url_for('website.help_page') }}">
+        {{ icon('circle-help', 17) }} Help
+      </a>
+
+      <p class="nav-group-label">Account</p>
+      <a class="nav-item {{ 'active' if active == 'settings' }}" href="{{ url_for('website.settings') }}">
+        {{ icon('settings', 17) }} Settings
+      </a>
+      <a class="nav-item {{ 'active' if active == 'profile' }}" href="{{ url_for('website.profile') }}">
+        {{ icon('user-round', 17) }} Profile
+      </a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="sidebar-user">
+        <span class="avatar" aria-hidden="true">{{ current_user.initials }}</span>
+        <div style="min-width:0">
+          <div class="s-name">{{ current_user.name }}</div>
+          <div class="s-mail">Local guest workspace</div>
+        </div>
+      </div>
+      <form method="post" action="{{ url_for('auth.logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <button type="submit" class="vh-btn vh-btn-ghost vh-btn-sm logout-btn">
+          {{ icon('log-out', 15) }} Logout
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <div class="vh-main">
+    <header class="vh-topbar">
+      <button type="button" class="icon-btn menu-btn" id="sidebar-toggle"
+              aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">
+        {{ icon('menu', 20) }}
+      </button>
+
+      <form class="topbar-search" method="get" action="{{ url_for('website.history') }}" role="search">
+        {{ icon('search', 16) }}
+        <input type="search" name="q" placeholder="Search analysis history…"
+               aria-label="Search analysis history" value="{{ request.args.get('q', '') if request.endpoint == 'website.history' else '' }}" />
+      </form>
+
+      <div class="topbar-actions">
+        {{ theme_toggle() }}
+
+        <div class="notif-wrap">
+          <button type="button" class="icon-btn notif-btn" data-dropdown-trigger
+                  aria-controls="notif-panel" aria-expanded="false" aria-label="Notifications">
+            {{ icon('bell', 18) }}
+            {% if current_user.notify_on_analysis and nav_recent %}<span class="notif-dot"></span>{% endif %}
+          </button>
+          <div class="dropdown notif-panel" id="notif-panel" data-dropdown hidden>
+            <div class="dropdown-head">
+              <b>Notifications</b>
+              <a href="{{ url_for('website.history') }}" style="padding:0;font-size:11.5px;color:var(--muted)">View all</a>
+            </div>
+            <div class="notif-list">
+              {% if nav_recent %}
+                {% for item in nav_recent %}
+                  <a class="notif-item" href="{{ url_for('website.report', analysis_id=item.id) }}">
+                    <div class="n-top">
+                      <span class="n-file">{{ item.filename }}</span>
+                      {{ verdict_badge(item.verdict_slug, item.prediction) }}
+                    </div>
+                    <div class="n-time">{{ item.created_at|dt }} · {{ item.spoof_percent }} spoof</div>
+                  </a>
+                {% endfor %}
+              {% else %}
+                <div class="notif-empty">No analyses yet. Upload audio to get started.</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="topbar-divider" aria-hidden="true"></div>
+
+        <div class="profile-menu">
+          <button type="button" class="profile-chip" data-dropdown-trigger
+                  aria-controls="profile-panel" aria-expanded="false">
+            <span class="avatar" aria-hidden="true">{{ current_user.initials }}</span>
+            <span class="p-name">{{ current_user.name }}</span>
+            {{ icon('chevron-down', 15) }}
+          </button>
+          <div class="dropdown" id="profile-panel" data-dropdown hidden>
+            <div class="dropdown-head">
+              <b>{{ current_user.name }}</b>
+              <span>{{ current_user.email }}</span>
+            </div>
+            <a href="{{ url_for('website.profile') }}">{{ icon('user-round', 15) }} Profile</a>
+            <a href="{{ url_for('website.settings') }}">{{ icon('settings', 15) }} Settings</a>
+            <a href="{{ url_for('website.history') }}">{{ icon('history', 15) }} History</a>
+            <a href="{{ url_for('website.help_page') }}">{{ icon('circle-help', 15) }} Help</a>
+            <div class="sep"></div>
+            <form method="post" action="{{ url_for('auth.logout') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <button type="submit" class="danger">{{ icon('log-out', 15) }} Logout</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    {{ flash_messages() }}
+
+    <main class="vh-content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <script src="{{ url_for('website.static', filename='vendor/lucide.min.js') }}"></script>
+  <script src="{{ url_for('website.static', filename='js/app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

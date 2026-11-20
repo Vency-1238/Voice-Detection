@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Audio Deepfake Detector</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>" />
+</head>
+<body>
+  <div class="page">
+
+    <header class="hero">
+      <p class="pill" id="model-pill">ASVspoof 2019 · Extra Trees · calibrated</p>
+      <h1>Audio Deepfake Detector</h1>
+      <p class="hero-sub">
+        Upload an audio file or record your voice. Each recording is classified as
+        <strong class="real-text">REAL</strong>,
+        <strong class="ai-text">AI-GENERATED</strong>, or
+        <strong class="uncertain-text">UNCERTAIN</strong> when the model is not
+        confident enough to make a safe call.
+      </p>
+    </header>
+
+    <main class="card">
+
+      <form id="upload-form" novalidate>
+        <label class="dropzone" id="dropzone" for="file-input" tabindex="0">
+          <span class="dropzone-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 16V4" />
+              <path d="m7 9 5-5 5 5" />
+              <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+            </svg>
+          </span>
+          <span class="dropzone-title">Select audio files</span>
+          <span class="dropzone-hint">or drag and drop them here</span>
+          <input type="file" id="file-input" name="files"
+                 accept=".wav,.flac,.mp3,.ogg,.webm,.m4a,.oga" multiple hidden />
+        </label>
+
+        <p class="formats">WAV · FLAC · MP3 · OGG &nbsp;|&nbsp; up to 20 files &nbsp;|&nbsp; up to 100 MB total</p>
+
+        <section class="recorder" id="recorder" aria-labelledby="recorder-title">
+          <div class="recorder-head">
+            <h2 class="recorder-title" id="recorder-title">Record your voice</h2>
+            <p class="recorder-hint">
+              Uses your microphone. The recording is converted to 16 kHz mono WAV in
+              your browser and only sent when you press Analyse. Speak clearly:
+              silence, music or non-speech can be misclassified.
+            </p>
+          </div>
+
+          <div class="recorder-controls">
+            <button type="button" class="btn record" id="record-btn" aria-pressed="false">
+              <span class="record-dot" aria-hidden="true"></span>
+              <span id="record-btn-label">Start recording</span>
+            </button>
+            <span class="record-timer" id="record-timer">0:00</span>
+            <div class="level-meter" aria-hidden="true">
+              <div class="level-fill" id="level-fill"></div>
+            </div>
+          </div>
+
+          <p class="recorder-status" id="recorder-status" role="status" aria-live="polite" hidden></p>
+
+          <div class="recording-preview" id="recording-preview" hidden>
+            <audio id="recording-audio" controls preload="metadata"></audio>
+            <div class="recording-actions">
+              <button type="button" class="btn primary" id="analyse-recording-btn">
+                Analyse this recording
+              </button>
+              <button type="button" class="btn ghost" id="discard-recording-btn">Discard</button>
+            </div>
+          </div>
+        </section>
+
+        <ul class="file-list" id="file-list" hidden></ul>
+
+        <div class="actions">
+          <button type="submit" class="btn primary" id="analyse-btn" disabled>Analyse audio</button>
+          <button type="button" class="btn ghost" id="reset-btn" hidden>Analyse another file</button>
+        </div>
+      </form>
+
+      <div class="status" id="status" hidden role="status" aria-live="polite">
+        <span class="spinner" aria-hidden="true"></span>
+        <span id="status-text">Analysing…</span>
+      </div>
+
+      <div class="alert" id="alert" hidden role="alert"></div>
+
+      <section class="results" id="results" hidden aria-live="polite">
+        <div class="results-head">
+          <h2>Results</h2>
+          <span class="elapsed" id="elapsed"></span>
+        </div>
+        <div class="summary" id="summary" hidden></div>
+        <div id="results-list"></div>
+      </section>
+    </main>
+
+    <footer class="disclaimer">
+      This is a machine-learning prediction, not proof of authenticity. Scores are
+      calibrated on held-out speakers, but results can still be unreliable for phone
+      recordings, heavy noise, music, or audio unlike the ASVspoof 2019 training data.
+      Treat an <strong>UNCERTAIN</strong> result as “needs review”, not as a verdict.
+    </footer>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

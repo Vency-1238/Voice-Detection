@@ -1,0 +1,34 @@
+{
+  "n": 2000,
+  "auc": 0.9385,
+  "at_shipped_threshold": {
+    "threshold": 0.65,
+    "accuracy": 0.7625,
+    "precision": 0.6934,
+    "recall": 0.941,
+    "f1": 0.7985,
+    "roc_auc": 0.9385,
+    "fpr": 0.416,
+    "fnr": 0.059,
+    "tp": 941,
+    "tn": 584,
+    "fp": 416,
+    "fn": 59,
+    "n": 2000
+  },
+  "at_dev_tuned_threshold": {
+    "threshold": 0.873,
+    "accuracy": 0.8925,
+    "precision": 0.958,
+    "recall": 0.821,
+    "f1": 0.8842,
+    "roc_auc": 0.9385,
+    "fpr": 0.036,
+    "fnr": 0.179,
+    "tp": 821,
+    "tn": 964,
+    "fp": 36,
+    "fn": 179,
+    "n": 2000
+  }
+}

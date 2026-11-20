@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% from 'partials/macros.html' import icon %}
+{% block content %}
+<section class="hero"><div class="vh-wrap hero-inner">
+  <div>
+    <span class="hero-badge"><span class="dot"></span> AI-powered audio authenticity</span>
+    <h1 class="hero-title">Not every voice<br><span class="dim">is what it seems.</span></h1>
+    <p class="hero-sub">Analyze audio recordings and identify potential AI-generated or manipulated speech using intelligent audio detection.</p>
+    <div class="hero-actions">
+      <a class="vh-btn vh-btn-primary vh-btn-lg" href="{{ url_for('website.detect') }}">{{ icon('audio-lines', 17) }} Analyze audio</a>
+      <a class="vh-btn vh-btn-outline vh-btn-lg" href="#technology">{{ icon('arrow-down', 17) }} Explore technology</a>
+    </div>
+    <dl class="hero-meta"><div><dt>Model</dt><strong>{{ info.model_name|default('Loaded') }}</strong></div><div><dt>Features</dt><strong>{{ info.n_features|default('172') }}</strong></div><div><dt>Output</dt><strong>3-way verdict</strong></div></dl>
+  </div>
+  <div class="hero-visual"><div class="wave-card">
+    <div class="wave-card-head"><div class="wave-file"><div class="wave-file-icon">{{ icon('shield-check', 20) }}</div><div><div class="wave-file-name">voice-sample.wav</div><div class="wave-file-sub">Authenticity analysis</div></div></div>{{ icon('ellipsis', 18) }}</div>
+    <div class="wave-stage" aria-label="Decorative audio waveform">{% for height in [30,48,68,42,82,58,35,72,92,55,39,76,45,88,60,34,70,50,84,46,63,38,78,56,30,66,48,86,42,62,35,74] %}<span class="wave-bar" style="height:{{ height }}%"></span>{% endfor %}</div>
+    <div class="wave-card-head" style="margin:18px 0 0"><span class="text-muted">Result</span><span class="verdict verdict-bonafide"><span class="verdict-dot"></span> Analysis ready</span></div>
+  </div></div>
+</div></section>
+<section class="section" id="features"><div class="vh-wrap"><div class="section-head"><p class="eyebrow">Built for careful verification</p><h2 class="section-title">Evidence, not guesswork.</h2><p class="section-sub">A focused workspace for inspecting voice recordings while keeping every prediction and limitation visible.</p></div><div class="feature-grid">
+  {% for item in [('audio-lines','AI voice detection','Classify recordings as BONAFIDE, SPOOF, or UNCERTAIN.'),('scan-search','Audio forensics','Inspect calibrated scores and chunk-level behavior.'),('history','Detection history','Keep a private, searchable record of your analyses.'),('file-text','Detailed reports','Export the actual result as PDF or CSV.') ] %}<article class="feature-card">{{ icon(item[0],22) }}<h3>{{ item[1] }}</h3><p>{{ item[2] }}</p></article>{% endfor %}
+</div></div></section>
+<section class="section" id="how-it-works"><div class="vh-wrap"><div class="section-head"><p class="eyebrow">How it works</p><h2 class="section-title">From recording to review in four steps.</h2></div><div class="steps">{% for title, text in [('Upload audio','Choose a supported recording or capture a browser recording.'),('Process safely','The server validates the upload and prepares it for analysis.'),('Analyze with the existing model','Your audio is sent through the project prediction pipeline.'),('Review the evidence','See the actual verdict, scores, timing, and report.') ] %}<div class="step"><b>{{ '%02d'|format(loop.index) }}</b><h3>{{ title }}</h3><p>{{ text }}</p></div>{% endfor %}</div></div></section>
+<section class="section" id="technology"><div class="vh-wrap"><div class="section-head"><p class="eyebrow">Technology</p><h2 class="section-title">A transparent detection workflow.</h2><p class="section-sub">VeriHuman preserves the existing ASVspoof 2019 Logical Access model and its 172-feature extraction pipeline. It does not retrain or replace the model.</p><a class="vh-btn vh-btn-outline" href="{{ url_for('website.model_page') }}">View model information {{ icon('arrow-right',16) }}</a></div></div></section>
+<section class="section" id="model-performance"><div class="vh-wrap">
+  <div class="section-head"><p class="eyebrow">Model and platform</p><h2 class="section-title">Important model information</h2><p class="section-sub">The figures below are exposed directly from the currently loaded model bundle. Verifiable values are shown; unavailable metrics remain hidden.</p></div>
+  <div class="grid-3">
+    <article class="feature-card"><h3>Training corpus</h3><p>ASVspoof 2019 Logical Access</p></article>
+    <article class="feature-card"><h3>Feature pipeline</h3><p>{{ info.n_features or '172' }} features · 16 kHz mono</p></article>
+    <article class="feature-card"><h3>Chunking</h3><p>{{ info.chunk_seconds or 'Not available' }} seconds per chunk</p></article>
+  </div>
+  <div class="model-facts">
+    <div><span>Model</span><strong>{{ info.model_name or 'Not available' }}</strong></div>
+    <div><span>Calibration</span><strong>{{ 'Enabled' if info.calibrated else 'Not available' }}</strong></div>
+    <div><span>BONAFIDE threshold</span><strong>{{ info.bonafide_threshold if info.bonafide_threshold is not none else 'Not available' }}</strong></div>
+    <div><span>SPOOF threshold</span><strong>{{ info.spoof_threshold if info.spoof_threshold is not none else 'Not available' }}</strong></div>
+  </div>
+  {% if info.eval_metrics %}
+  <div class="grid-3" style="margin-top:18px">
+    <article class="feature-card"><h3>Holdout accuracy</h3><p>{{ ((info.eval_metrics.accuracy * 100)|round(2)) }}%</p></article>
+    <article class="feature-card"><h3>Holdout precision</h3><p>{{ ((info.eval_metrics.precision * 100)|round(2)) }}%</p></article>
+    <article class="feature-card"><h3>Holdout recall</h3><p>{{ ((info.eval_metrics.recall * 100)|round(2)) }}%</p></article>
+  </div>
+  {% endif %}
+</div></section>
+{% endblock %}

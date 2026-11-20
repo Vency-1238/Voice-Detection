@@ -1,0 +1,72 @@
+{% extends "base_app.html" %}{% block content %}
+<div class="page-head"><div><p class="eyebrow">Transparency</p><h1>Model information</h1><p class="page-sub">Actual metadata and evaluation values from the currently loaded model bundle.</p></div></div>
+<section class="panel"><h2>Current model</h2><dl class="detail-list">
+<dt>Status</dt><dd>{{ 'Loaded' if info.loaded else 'Unavailable' }}</dd>
+<dt>Model</dt><dd>{{ info.model_name or 'Not available' }}</dd>
+<dt>Training corpus</dt><dd>ASVspoof 2019 Logical Access</dd>
+<dt>Feature set</dt><dd>{{ info.feature_set or 'Not available' }}</dd>
+<dt>Features</dt><dd>{{ info.n_features or '172' }}</dd>
+<dt>Sample rate</dt><dd>{{ info.sample_rate or '16000' }} Hz</dd>
+<dt>Chunk length</dt><dd>{{ info.chunk_seconds or 'Not available' }} seconds</dd>
+<dt>Calibration</dt><dd>{{ 'Enabled' if info.calibrated else 'Not available' }}</dd>
+<dt>BONAFIDE threshold</dt><dd>{{ info.bonafide_threshold if info.bonafide_threshold is not none else 'Not available' }}</dd>
+<dt>SPOOF threshold</dt><dd>{{ info.spoof_threshold if info.spoof_threshold is not none else 'Not available' }}</dd>
+</dl></section>
+<section class="panel"><h2>Holdout evaluation</h2>
+{% if info.eval_metrics %}
+<dl class="detail-list">{% for name, value in info.eval_metrics.items() %}
+<dt>{{ name|replace('_',' ')|title }}</dt><dd>{% if name in ['accuracy','precision','recall','f1','roc_auc','fpr','fnr'] %}{{ ((value * 100)|round(3)) }}%{% else %}{{ value }}{% endif %}</dd>
+{% endfor %}</dl>
+{% else %}<p class="text-muted">Evaluation metrics are not included in the loaded model bundle.</p>{% endif %}
+</section>
+<section class="panel"><h2>Development test metrics</h2>
+{% if info.dev_test %}
+<dl class="detail-list">{% for name, value in info.dev_test.items() %}
+<dt>{{ name|replace('_',' ')|title }}</dt><dd>{% if name in ['accuracy','precision','recall','f1','roc_auc','fpr','fnr'] %}{{ ((value * 100)|round(3)) }}%{% else %}{{ value }}{% endif %}</dd>
+{% endfor %}</dl>
+{% endif %}
+</section>
+<section class="panel"><h2>Calibration and threshold tuning</h2>
+<dl class="detail-list">
+<dt>Target false-positive rate</dt><dd>{{ ((info.target_fpr or 0) * 100)|round(3) }}%</dd>
+{% if info.eval_calibration %}{% for name, value in info.eval_calibration.items() %}<dt>Holdout {{ name|replace('_',' ')|upper }}</dt><dd>{{ value }}</dd>{% endfor %}{% endif %}
+{% if info.dev_test_calibration %}{% for name, value in info.dev_test_calibration.items() %}<dt>Development {{ name|replace('_',' ')|upper }}</dt><dd>{{ value }}</dd>{% endfor %}{% endif %}
+{% if info.threshold_tuning %}{% for name, value in info.threshold_tuning.items() %}<dt>{{ name|replace('_',' ')|title }}</dt><dd>{% if 'fpr' in name or 'recall' in name or 'precision' in name or 'f1' in name %}{{ ((value * 100)|round(3)) if 'target' not in name else value }}%{% else %}{{ value }}{% endif %}</dd>{% endfor %}{% endif %}
+</dl></section>
+<section class="panel"><h2>Validation-set metrics</h2>
+{% if info.eval_validation %}
+<dl class="detail-list">{% for name, value in info.eval_validation.items() %}
+<dt>{{ name|replace('_',' ')|title }}</dt><dd>{% if name in ['accuracy','precision','recall','f1','roc_auc','fpr','fnr'] %}{{ ((value * 100)|round(3)) }}%{% else %}{{ value }}{% endif %}</dd>
+{% endfor %}</dl>
+{% else %}<p class="text-muted">Validation metrics are not included in the loaded model bundle.</p>{% endif %}
+</section>
+<section class="panel"><h2>Three-way holdout distribution</h2>
+{% if info.holdout_three_way %}
+<dl class="detail-list">{% for class_name, values in info.holdout_three_way.items() %}
+<dt>{{ class_name|upper }} — {{ values.n }} samples</dt><dd>BONAFIDE {{ values.bonafide_pct }}% · UNCERTAIN {{ values.uncertain_pct }}% · SPOOF {{ values.spoof_pct }}%</dd>
+{% endfor %}</dl>
+{% endif %}
+</section>
+<section class="panel"><h2>Per-attack holdout recall</h2>
+{% if info.per_attack %}
+<div class="table-wrap"><table class="vh-table"><thead><tr><th>Class / attack</th><th>Samples</th><th>Recall or FPR</th><th>Mean spoof score</th></tr></thead><tbody>
+{% for name, values in info.per_attack.items() %}
+<tr><td>{{ name }}</td><td>{{ values.n or '—' }}</td><td>{% if values.recall is defined %}{{ ((values.recall * 100)|round(2)) }}%{% elif values.false_positive_rate is defined %}{{ ((values.false_positive_rate * 100)|round(2)) }}% FPR{% else %}—{% endif %}</td><td>{% if values.mean_spoof_score is defined %}{{ values.mean_spoof_score }}%{% else %}—{% endif %}</td></tr>
+{% endfor %}
+</tbody></table></div>
+{% else %}<p class="text-muted">Per-attack metrics are not included in the loaded model bundle.</p>{% endif %}
+</section>
+{% if info.benchmark %}
+<section class="panel"><h2>Model performance and inference speed</h2>
+<dl class="detail-list">
+<dt>Model size</dt><dd>{{ info.benchmark.model_size_mb }} MB</dd>
+<dt>Model load time</dt><dd>{{ info.benchmark.load_ms }} ms</dd>
+<dt>Mean end-to-end time</dt><dd>{{ info.benchmark.end_to_end_ms_mean }} ms</dd>
+<dt>Median end-to-end time</dt><dd>{{ info.benchmark.end_to_end_ms_median }} ms</dd>
+<dt>Cold-start time</dt><dd>{{ info.benchmark.cold_start_ms }} ms</dd>
+<dt>Memory usage</dt><dd>{{ info.benchmark.rss_mb }} MB</dd>
+</dl>
+</section>
+{% endif %}
+<section class="panel"><h2>Inference workflow</h2><p class="section-sub">The server decodes the recording, resamples it to 16 kHz mono through the existing audio pipeline, creates 5-second chunks, extracts the same 172-feature vector, runs the loaded classifier, applies the existing calibrator, and uses the configured thresholds.</p><p class="vh-hint">No retraining, threshold tuning, or feature-pipeline changes are performed by the website.</p></section>
+{% endblock %}

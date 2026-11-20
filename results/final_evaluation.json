@@ -1,0 +1,1627 @@
+{
+  "target_fpr": 0.02,
+  "old_pipeline": {
+    "info": {
+      "train_seconds": 0.9,
+      "threshold": 0.97154,
+      "bonafide_threshold": 0.5,
+      "threshold_info": {
+        "fpr_on_tune": 0.019623,
+        "recall_on_tune": 0.763724,
+        "precision_on_tune": 0.997072,
+        "f1_on_tune": 0.864936,
+        "target_fpr": 0.02
+      }
+    },
+    "feature_set": "base90",
+    "model": "rf300",
+    "train_files": 4000
+  },
+  "new_pipeline": {
+    "info": {
+      "train_seconds": 12.77,
+      "threshold": 0.711834,
+      "bonafide_threshold": 0.5,
+      "threshold_info": {
+        "fpr_on_tune": 0.019623,
+        "recall_on_tune": 0.996053,
+        "precision_on_tune": 0.997754,
+        "f1_on_tune": 0.996903,
+        "target_fpr": 0.02
+      },
+      "total_rows": 35700,
+      "speakers": 20,
+      "augmentation": {
+        "cache": "train_aug_balanced_5160_full.npz",
+        "native_rows": 25380,
+        "augmented_rows": 10320
+      }
+    },
+    "feature_set": "full",
+    "model": "extra150",
+    "train_files": 35700
+  },
+  "splits": {
+    "dev tune": {
+      "old": {
+        "metrics": {
+          "threshold": 0.97154,
+          "accuracy": 0.785944,
+          "precision": 0.997072,
+          "recall": 0.763724,
+          "f1": 0.864936,
+          "roc_auc": 0.966194,
+          "fpr": 0.019623,
+          "fnr": 0.236276,
+          "tp": 8514,
+          "tn": 1249,
+          "fp": 25,
+          "fn": 2634,
+          "n": 12422
+        },
+        "three_way": {
+          "bonafide": {
+            "n": 1274,
+            "bonafide_pct": 64.52,
+            "uncertain_pct": 33.52,
+            "spoof_pct": 1.96
+          },
+          "spoof": {
+            "n": 11148,
+            "bonafide_pct": 2.11,
+            "uncertain_pct": 21.52,
+            "spoof_pct": 76.37
+          }
+        },
+        "calibration": {
+          "brier": 0.04023,
+          "log_loss": 0.13523,
+          "ece": 0.007986
+        }
+      },
+      "new": {
+        "metrics": {
+          "threshold": 0.711834,
+          "accuracy": 0.994445,
+          "precision": 0.997754,
+          "recall": 0.996053,
+          "f1": 0.996903,
+          "roc_auc": 0.999401,
+          "fpr": 0.019623,
+          "fnr": 0.003947,
+          "tp": 11104,
+          "tn": 1249,
+          "fp": 25,
+          "fn": 44,
+          "n": 12422
+        },
+        "three_way": {
+          "bonafide": {
+            "n": 1274,
+            "bonafide_pct": 96.23,
+            "uncertain_pct": 1.81,
+            "spoof_pct": 1.96
+          },
+          "spoof": {
+            "n": 11148,
+            "bonafide_pct": 0.22,
+            "uncertain_pct": 0.18,
+            "spoof_pct": 99.61
+          }
+        },
+        "calibration": {
+          "brier": 0.004199,
+          "log_loss": 0.01599,
+          "ece": 0.002104
+        }
+      }
+    },
+    "dev test": {
+      "old": {
+        "metrics": {
+          "threshold": 0.97154,
+          "accuracy": 0.796088,
+          "precision": 0.997689,
+          "recall": 0.774578,
+          "f1": 0.87209,
+          "roc_auc": 0.963097,
+          "fpr": 0.015699,
+          "fnr": 0.225422,
+          "tp": 8635,
+          "tn": 1254,
+          "fp": 20,
+          "fn": 2513,
+          "n": 12422
+        },
+        "three_way": {
+          "bonafide": {
+            "n": 1274,
+            "bonafide_pct": 50.63,
+            "uncertain_pct": 47.8,
+            "spoof_pct": 1.57
+          },
+          "spoof": {
+            "n": 11148,
+            "bonafide_pct": 1.36,
+            "uncertain_pct": 21.18,
+            "spoof_pct": 77.46
+          }
+        },
+        "calibration": {
+          "brier": 0.04531,
+          "log_loss": 0.147079,
+          "ece": 0.017604
+        }
+      },
+      "new": {
+        "metrics": {
+          "threshold": 0.711834,
+          "accuracy": 0.995894,
+          "precision": 0.998562,
+          "recall": 0.99686,
+          "f1": 0.997711,
+          "roc_auc": 0.999756,
+          "fpr": 0.012559,
+          "fnr": 0.00314,
+          "tp": 11113,
+          "tn": 1258,
+          "fp": 16,
+          "fn": 35,
+          "n": 12422
+        },
+        "three_way": {
+          "bonafide": {
+            "n": 1274,
+            "bonafide_pct": 96.7,
+            "uncertain_pct": 2.04,
+            "spoof_pct": 1.26
+          },
+          "spoof": {
+            "n": 11148,
+            "bonafide_pct": 0.15,
+            "uncertain_pct": 0.16,
+            "spoof_pct": 99.69
+          }
+        },
+        "calibration": {
+          "brier": 0.003526,
+          "log_loss": 0.013259,
+          "ece": 0.003916
+        }
+      }
+    },
+    "eval validation": {
+      "old": {
+        "metrics": {
+          "threshold": 0.97154,
+          "accuracy": 0.8665,
+          "precision": 0.979085,
+          "recall": 0.749,
+          "f1": 0.848725,
+          "roc_auc": 0.930283,
+          "fpr": 0.016,
+          "fnr": 0.251,
+          "tp": 749,
+          "tn": 984,
+          "fp": 16,
+          "fn": 251,
+          "n": 2000
+        },
+        "three_way": {
+          "bonafide": {
+            "n": 1000,
+            "bonafide_pct": 61.5,
+            "uncertain_pct": 36.9,
+            "spoof_pct": 1.6
+          },
+          "spoof": {
+            "n": 1000,
+            "bonafide_pct": 7.7,
+            "uncertain_pct": 17.4,
+            "spoof_pct": 74.9
+          }
+        },
+        "calibration": {
+          "brier": 0.156628,
+          "log_loss": 0.469282,
+          "ece": 0.170164
+        }
+      },
+      "new": {
+        "metrics": {
+          "threshold": 0.711834,
+          "accuracy": 0.913,
+          "precision": 0.985882,
+          "recall": 0.838,
+          "f1": 0.905946,
+          "roc_auc": 0.962204,
+          "fpr": 0.012,
+          "fnr": 0.162,
+          "tp": 838,
+          "tn": 988,
+          "fp": 12,
+          "fn": 162,
+          "n": 2000
+        },
+        "three_way": {
+          "bonafide": {
+            "n": 1000,
+            "bonafide_pct": 98.0,
+            "uncertain_pct": 0.8,
+            "spoof_pct": 1.2
+          },
+          "spoof": {
+            "n": 1000,
+            "bonafide_pct": 14.7,
+            "uncertain_pct": 1.5,
+            "spoof_pct": 83.8
+          }
+        },
+        "calibration": {
+          "brier": 0.07383,
+          "log_loss": 0.416347,
+          "ece": 0.065735
+        }
+      }
+    },
+    "eval holdout": {
+      "old": {
+        "metrics": {
+          "threshold": 0.97154,
+          "accuracy": 0.851,
+          "precision": 0.982143,
+          "recall": 0.715,
+          "f1": 0.827546,
+          "roc_auc": 0.920345,
+          "fpr": 0.013,
+          "fnr": 0.285,
+          "tp": 715,
+          "tn": 987,
+          "fp": 13,
+          "fn": 285,
+          "n": 2000
+        },
+        "three_way": {
+          "bonafide": {
+            "n": 1000,
+            "bonafide_pct": 62.5,
+            "uncertain_pct": 36.2,
+            "spoof_pct": 1.3
+          },
+          "spoof": {
+            "n": 1000,
+            "bonafide_pct": 8.9,
+            "uncertain_pct": 19.6,
+            "spoof_pct": 71.5
+          }
+        },
+        "calibration": {
+          "brier": 0.158459,
+          "log_loss": 0.482363,
+          "ece": 0.158397
+        }
+      },
+      "new": {
+        "metrics": {
+          "threshold": 0.711834,
+          "accuracy": 0.905,
+          "precision": 0.978723,
+          "recall": 0.828,
+          "f1": 0.897075,
+          "roc_auc": 0.955607,
+          "fpr": 0.018,
+          "fnr": 0.172,
+          "tp": 828,
+          "tn": 982,
+          "fp": 18,
+          "fn": 172,
+          "n": 2000
+        },
+        "three_way": {
+          "bonafide": {
+            "n": 1000,
+            "bonafide_pct": 97.2,
+            "uncertain_pct": 1.0,
+            "spoof_pct": 1.8
+          },
+          "spoof": {
+            "n": 1000,
+            "bonafide_pct": 16.2,
+            "uncertain_pct": 1.0,
+            "spoof_pct": 82.8
+          }
+        },
+        "calibration": {
+          "brier": 0.081768,
+          "log_loss": 0.457504,
+          "ece": 0.070495
+        }
+      }
+    }
+  },
+  "eval_holdout_per_attack": {
+    "bonafide": {
+      "n": 1000,
+      "mean_spoof_score": 3.92,
+      "false_positive_rate": 0.018
+    },
+    "A07": {
+      "n": 96,
+      "mean_spoof_score": 99.97,
+      "recall": 1.0
+    },
+    "A08": {
+      "n": 71,
+      "mean_spoof_score": 99.98,
+      "recall": 1.0
+    },
+    "A09": {
+      "n": 64,
+      "mean_spoof_score": 99.99,
+      "recall": 1.0
+    },
+    "A10": {
+      "n": 61,
+      "mean_spoof_score": 98.82,
+      "recall": 0.9836
+    },
+    "A11": {
+      "n": 74,
+      "mean_spoof_score": 99.55,
+      "recall": 1.0
+    },
+    "A12": {
+      "n": 67,
+      "mean_spoof_score": 94.04,
+      "recall": 0.9254
+    },
+    "A13": {
+      "n": 86,
+      "mean_spoof_score": 99.82,
+      "recall": 1.0
+    },
+    "A14": {
+      "n": 67,
+      "mean_spoof_score": 99.73,
+      "recall": 1.0
+    },
+    "A15": {
+      "n": 75,
+      "mean_spoof_score": 98.65,
+      "recall": 0.9867
+    },
+    "A16": {
+      "n": 79,
+      "mean_spoof_score": 99.48,
+      "recall": 1.0
+    },
+    "A17": {
+      "n": 81,
+      "mean_spoof_score": 7.73,
+      "recall": 0.0494
+    },
+    "A18": {
+      "n": 97,
+      "mean_spoof_score": 27.31,
+      "recall": 0.1856
+    },
+    "A19": {
+      "n": 82,
+      "mean_spoof_score": 87.53,
+      "recall": 0.8902
+    }
+  },
+  "speed": {
+    "files": 40,
+    "old_end_to_end": {
+      "mean_ms": 4251.28,
+      "median_ms": 4251.28,
+      "min_ms": 4152.55
+    },
+    "new_end_to_end_batch": {
+      "mean_ms": 988.23,
+      "median_ms": 1027.35,
+      "min_ms": 899.39
+    },
+    "old_per_file_ms": 106.28,
+    "new_per_file_ms": 24.71,
+    "old_feature_extraction_ms": 37.5,
+    "new_feature_extraction_ms": 20.03,
+    "old_model_one_row": {
+      "mean_ms": 48.03,
+      "median_ms": 43.49,
+      "min_ms": 39.04
+    },
+    "new_model_one_row": {
+      "mean_ms": 12.87,
+      "median_ms": 12.47,
+      "min_ms": 8.2
+    }
+  },
+  "chunking": {
+    "recordings": 24,
+    "chunk_seconds": {
+      "5.0": {
+        "accuracy": 0.9583,
+        "uncertain_rate": 0.0417,
+        "mean_ms_per_file": 64.57,
+        "mean_chunks_per_file": 2.04,
+        "results": [
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 7.32,
+            "chunks": 2
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 2.1,
+            "chunks": 3
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.74,
+            "chunks": 2
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.01,
+            "chunks": 2
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 7.32,
+            "chunks": 2
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 7.32,
+            "chunks": 2
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 7.32,
+            "chunks": 2
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 7.32,
+            "chunks": 2
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 7.32,
+            "chunks": 2
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 7.32,
+            "chunks": 2
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 7.32,
+            "chunks": 2
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 7.32,
+            "chunks": 2
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 2
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 82.0,
+            "chunks": 2
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 99.95,
+            "chunks": 2
+          },
+          {
+            "truth": 1,
+            "prediction": "UNCERTAIN",
+            "score": 68.95,
+            "chunks": 2
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 2
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 2
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 2
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 2
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 2
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 2
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 2
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 2
+          }
+        ]
+      },
+      "10.0": {
+        "accuracy": 0.9583,
+        "uncertain_rate": 0.0,
+        "mean_ms_per_file": 44.37,
+        "mean_chunks_per_file": 1.04,
+        "results": [
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.0,
+            "chunks": 1
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 2.1,
+            "chunks": 2
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.0,
+            "chunks": 1
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.0,
+            "chunks": 1
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.0,
+            "chunks": 1
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.0,
+            "chunks": 1
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.0,
+            "chunks": 1
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.0,
+            "chunks": 1
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.0,
+            "chunks": 1
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.0,
+            "chunks": 1
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.0,
+            "chunks": 1
+          },
+          {
+            "truth": 0,
+            "prediction": "BONAFIDE",
+            "score": 0.0,
+            "chunks": 1
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 1
+          },
+          {
+            "truth": 1,
+            "prediction": "BONAFIDE",
+            "score": 4.59,
+            "chunks": 1
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 99.99,
+            "chunks": 1
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 94.38,
+            "chunks": 1
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 1
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 1
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 1
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 1
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 1
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 1
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 1
+          },
+          {
+            "truth": 1,
+            "prediction": "SPOOF",
+            "score": 100.0,
+            "chunks": 1
+          }
+        ]
+      }
+    },
+    "mean_seconds": 9.41
+  },
+  "formats": {
+    "ffmpeg": "C:\\ffmpeg-8.0-essentials_build\\bin\\ffmpeg.EXE",
+    "formats": {
+      "wav_16k": {
+        "encoded": 20,
+        "decoded": 20,
+        "decode_errors": 0,
+        "label_agreement_pct": 100.0,
+        "mean_abs_score_change_pct": 0.0,
+        "files": [
+          {
+            "file": "LA_E_8210341.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 3.9,
+            "converted_score": 3.9
+          },
+          {
+            "file": "LA_E_1044611.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.02,
+            "converted_score": 0.02
+          },
+          {
+            "file": "LA_E_6515051.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.05,
+            "converted_score": 0.05
+          },
+          {
+            "file": "LA_E_7222028.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.01,
+            "converted_score": 0.01
+          },
+          {
+            "file": "LA_E_1494810.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.02,
+            "converted_score": 0.02
+          },
+          {
+            "file": "LA_E_4163803.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.19,
+            "converted_score": 0.19
+          },
+          {
+            "file": "LA_E_6963214.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.46,
+            "converted_score": 0.46
+          },
+          {
+            "file": "LA_E_1921321.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.23,
+            "converted_score": 0.23
+          },
+          {
+            "file": "LA_E_9972979.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.13,
+            "converted_score": 0.13
+          },
+          {
+            "file": "LA_E_7645690.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.01,
+            "converted_score": 0.01
+          },
+          {
+            "file": "LA_E_2893265.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_4372637.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 99.88,
+            "converted_score": 99.88
+          },
+          {
+            "file": "LA_E_5477144.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 99.78,
+            "converted_score": 99.78
+          },
+          {
+            "file": "LA_E_9965543.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 98.37,
+            "converted_score": 98.37
+          },
+          {
+            "file": "LA_E_5981263.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 99.87,
+            "converted_score": 99.87
+          },
+          {
+            "file": "LA_E_5127322.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 96.6,
+            "converted_score": 96.6
+          },
+          {
+            "file": "LA_E_9209678.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_8724420.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_2593581.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_4737176.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          }
+        ]
+      },
+      "wav_44k": {
+        "encoded": 20,
+        "decoded": 20,
+        "decode_errors": 0,
+        "label_agreement_pct": 90.0,
+        "mean_abs_score_change_pct": 6.93,
+        "files": [
+          {
+            "file": "LA_E_8210341.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 3.9,
+            "converted_score": 0.08
+          },
+          {
+            "file": "LA_E_1044611.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.02,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_6515051.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.05,
+            "converted_score": 0.02
+          },
+          {
+            "file": "LA_E_7222028.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.01,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_1494810.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.02,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_4163803.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.19,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_6963214.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.46,
+            "converted_score": 0.05
+          },
+          {
+            "file": "LA_E_1921321.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.23,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_9972979.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.13,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_7645690.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.01,
+            "converted_score": 0.01
+          },
+          {
+            "file": "LA_E_2893265.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_4372637.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 99.88,
+            "converted_score": 99.95
+          },
+          {
+            "file": "LA_E_5477144.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 99.78,
+            "converted_score": 99.98
+          },
+          {
+            "file": "LA_E_9965543.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 98.37,
+            "converted_score": 93.89
+          },
+          {
+            "file": "LA_E_5981263.flac",
+            "original": "SPOOF",
+            "converted": "BONAFIDE",
+            "original_score": 99.87,
+            "converted_score": 1.95
+          },
+          {
+            "file": "LA_E_5127322.flac",
+            "original": "SPOOF",
+            "converted": "UNCERTAIN",
+            "original_score": 96.6,
+            "converted_score": 65.53
+          },
+          {
+            "file": "LA_E_9209678.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_8724420.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_2593581.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_4737176.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          }
+        ]
+      },
+      "flac_44k": {
+        "encoded": 20,
+        "decoded": 20,
+        "decode_errors": 0,
+        "label_agreement_pct": 90.0,
+        "mean_abs_score_change_pct": 6.93,
+        "files": [
+          {
+            "file": "LA_E_8210341.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 3.9,
+            "converted_score": 0.08
+          },
+          {
+            "file": "LA_E_1044611.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.02,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_6515051.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.05,
+            "converted_score": 0.02
+          },
+          {
+            "file": "LA_E_7222028.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.01,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_1494810.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.02,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_4163803.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.19,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_6963214.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.46,
+            "converted_score": 0.05
+          },
+          {
+            "file": "LA_E_1921321.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.23,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_9972979.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.13,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_7645690.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.01,
+            "converted_score": 0.01
+          },
+          {
+            "file": "LA_E_2893265.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_4372637.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 99.88,
+            "converted_score": 99.95
+          },
+          {
+            "file": "LA_E_5477144.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 99.78,
+            "converted_score": 99.98
+          },
+          {
+            "file": "LA_E_9965543.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 98.37,
+            "converted_score": 93.89
+          },
+          {
+            "file": "LA_E_5981263.flac",
+            "original": "SPOOF",
+            "converted": "BONAFIDE",
+            "original_score": 99.87,
+            "converted_score": 1.95
+          },
+          {
+            "file": "LA_E_5127322.flac",
+            "original": "SPOOF",
+            "converted": "UNCERTAIN",
+            "original_score": 96.6,
+            "converted_score": 65.53
+          },
+          {
+            "file": "LA_E_9209678.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_8724420.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_2593581.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_4737176.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          }
+        ]
+      },
+      "ogg_44k": {
+        "encoded": 20,
+        "decoded": 20,
+        "decode_errors": 0,
+        "label_agreement_pct": 85.0,
+        "mean_abs_score_change_pct": 9.434,
+        "files": [
+          {
+            "file": "LA_E_8210341.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 3.9,
+            "converted_score": 0.56
+          },
+          {
+            "file": "LA_E_1044611.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.02,
+            "converted_score": 0.13
+          },
+          {
+            "file": "LA_E_6515051.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.05,
+            "converted_score": 1.45
+          },
+          {
+            "file": "LA_E_7222028.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.01,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_1494810.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.02,
+            "converted_score": 0.01
+          },
+          {
+            "file": "LA_E_4163803.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.19,
+            "converted_score": 0.12
+          },
+          {
+            "file": "LA_E_6963214.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.46,
+            "converted_score": 0.13
+          },
+          {
+            "file": "LA_E_1921321.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.23,
+            "converted_score": 0.03
+          },
+          {
+            "file": "LA_E_9972979.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.13,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_7645690.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.01,
+            "converted_score": 0.43
+          },
+          {
+            "file": "LA_E_2893265.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_4372637.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 99.88,
+            "converted_score": 99.89
+          },
+          {
+            "file": "LA_E_5477144.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 99.78,
+            "converted_score": 99.87
+          },
+          {
+            "file": "LA_E_9965543.flac",
+            "original": "SPOOF",
+            "converted": "BONAFIDE",
+            "original_score": 98.37,
+            "converted_score": 49.66
+          },
+          {
+            "file": "LA_E_5981263.flac",
+            "original": "SPOOF",
+            "converted": "BONAFIDE",
+            "original_score": 99.87,
+            "converted_score": 2.15
+          },
+          {
+            "file": "LA_E_5127322.flac",
+            "original": "SPOOF",
+            "converted": "UNCERTAIN",
+            "original_score": 96.6,
+            "converted_score": 60.47
+          },
+          {
+            "file": "LA_E_9209678.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 99.99
+          },
+          {
+            "file": "LA_E_8724420.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_2593581.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_4737176.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          }
+        ]
+      },
+      "mp3_44k": {
+        "encoded": 20,
+        "decoded": 20,
+        "decode_errors": 0,
+        "label_agreement_pct": 90.0,
+        "mean_abs_score_change_pct": 7.004,
+        "files": [
+          {
+            "file": "LA_E_8210341.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 3.9,
+            "converted_score": 0.05
+          },
+          {
+            "file": "LA_E_1044611.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.02,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_6515051.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.05,
+            "converted_score": 0.01
+          },
+          {
+            "file": "LA_E_7222028.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.01,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_1494810.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.02,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_4163803.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.19,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_6963214.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.46,
+            "converted_score": 0.02
+          },
+          {
+            "file": "LA_E_1921321.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.23,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_9972979.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.13,
+            "converted_score": 0.0
+          },
+          {
+            "file": "LA_E_7645690.flac",
+            "original": "BONAFIDE",
+            "converted": "BONAFIDE",
+            "original_score": 0.01,
+            "converted_score": 0.01
+          },
+          {
+            "file": "LA_E_2893265.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_4372637.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 99.88,
+            "converted_score": 99.9
+          },
+          {
+            "file": "LA_E_5477144.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 99.78,
+            "converted_score": 99.98
+          },
+          {
+            "file": "LA_E_9965543.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 98.37,
+            "converted_score": 92.78
+          },
+          {
+            "file": "LA_E_5981263.flac",
+            "original": "SPOOF",
+            "converted": "BONAFIDE",
+            "original_score": 99.87,
+            "converted_score": 1.91
+          },
+          {
+            "file": "LA_E_5127322.flac",
+            "original": "SPOOF",
+            "converted": "UNCERTAIN",
+            "original_score": 96.6,
+            "converted_score": 65.22
+          },
+          {
+            "file": "LA_E_9209678.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_8724420.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_2593581.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          },
+          {
+            "file": "LA_E_4737176.flac",
+            "original": "SPOOF",
+            "converted": "SPOOF",
+            "original_score": 100.0,
+            "converted_score": 100.0
+          }
+        ]
+      }
+    },
+    "original": [
+      {
+        "file": "LA_E_8210341.flac",
+        "prediction": "BONAFIDE",
+        "spoof_score": 3.9
+      },
+      {
+        "file": "LA_E_1044611.flac",
+        "prediction": "BONAFIDE",
+        "spoof_score": 0.02
+      },
+      {
+        "file": "LA_E_6515051.flac",
+        "prediction": "BONAFIDE",
+        "spoof_score": 0.05
+      },
+      {
+        "file": "LA_E_7222028.flac",
+        "prediction": "BONAFIDE",
+        "spoof_score": 0.01
+      },
+      {
+        "file": "LA_E_1494810.flac",
+        "prediction": "BONAFIDE",
+        "spoof_score": 0.02
+      },
+      {
+        "file": "LA_E_4163803.flac",
+        "prediction": "BONAFIDE",
+        "spoof_score": 0.19
+      },
+      {
+        "file": "LA_E_6963214.flac",
+        "prediction": "BONAFIDE",
+        "spoof_score": 0.46
+      },
+      {
+        "file": "LA_E_1921321.flac",
+        "prediction": "BONAFIDE",
+        "spoof_score": 0.23
+      },
+      {
+        "file": "LA_E_9972979.flac",
+        "prediction": "BONAFIDE",
+        "spoof_score": 0.13
+      },
+      {
+        "file": "LA_E_7645690.flac",
+        "prediction": "BONAFIDE",
+        "spoof_score": 0.01
+      },
+      {
+        "file": "LA_E_2893265.flac",
+        "prediction": "SPOOF",
+        "spoof_score": 100.0
+      },
+      {
+        "file": "LA_E_4372637.flac",
+        "prediction": "SPOOF",
+        "spoof_score": 99.88
+      },
+      {
+        "file": "LA_E_5477144.flac",
+        "prediction": "SPOOF",
+        "spoof_score": 99.78
+      },
+      {
+        "file": "LA_E_9965543.flac",
+        "prediction": "SPOOF",
+        "spoof_score": 98.37
+      },
+      {
+        "file": "LA_E_5981263.flac",
+        "prediction": "SPOOF",
+        "spoof_score": 99.87
+      },
+      {
+        "file": "LA_E_5127322.flac",
+        "prediction": "SPOOF",
+        "spoof_score": 96.6
+      },
+      {
+        "file": "LA_E_9209678.flac",
+        "prediction": "SPOOF",
+        "spoof_score": 100.0
+      },
+      {
+        "file": "LA_E_8724420.flac",
+        "prediction": "SPOOF",
+        "spoof_score": 100.0
+      },
+      {
+        "file": "LA_E_2593581.flac",
+        "prediction": "SPOOF",
+        "spoof_score": 100.0
+      },
+      {
+        "file": "LA_E_4737176.flac",
+        "prediction": "SPOOF",
+        "spoof_score": 100.0
+      }
+    ]
+  },
+  "bad_files": {
+    "empty.wav": {
+      "ok": false,
+      "error": "Could not analyse this file: Could not decode 'empty.wav'. It may be corrupted, empty, or not a real audio fil"
+    },
+    "corrupt.wav": {
+      "ok": false,
+      "error": "Could not analyse this file: Could not decode 'corrupt.wav'. It may be corrupted, empty, or not a real audio f"
+    },
+    "short.wav": {
+      "ok": false,
+      "error": "Could not analyse this file: Audio is too short: at least 0.25 seconds are required."
+    },
+    "valid_1s.wav": {
+      "ok": true,
+      "prediction": "SPOOF",
+      "score": 97.33
+    },
+    "stereo.wav": {
+      "ok": true,
+      "prediction": "SPOOF",
+      "score": 97.33
+    }
+  }
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+{% from 'partials/macros.html' import logo, icon, theme_toggle, flash_messages, verdict_badge, field with context %}
+<html lang="en" data-theme="{{ nav_theme|default('dark') }}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% if page_title %}{{ page_title }} · VeriHuman{% else %}VeriHuman — Trust Every Voice. Verify Every Sound.{% endif %}</title>
+  <meta name="description" content="VeriHuman is an AI-powered audio authenticity and deepfake detection platform. Analyse speech recordings with a calibrated detection model." />
+  <meta name="theme-color" content="#09090B" />
+  <link rel="icon" href="{{ url_for('website.static', filename='brand/favicon.svg') }}" type="image/svg+xml" />
+  <link rel="preload" href="{{ url_for('website.static', filename='fonts/inter-latin.woff2') }}" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="{{ url_for('website.static', filename='vendor/bootstrap.min.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('website.static', filename='css/verihuman.css') }}" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("vh-theme");
+        if (stored === "light" || stored === "dark") {
+          document.documentElement.setAttribute("data-theme", stored);
+        }
+      } catch (error) {}
+    })();
+  </script>
+</head>
+<body class="vh-public">
+
+  <header class="vh-nav">
+    <div class="vh-nav-inner">
+      {{ logo(26, True, url_for('website.landing'), 'nav-logo') }}
+
+      <button type="button" class="icon-btn nav-toggle" id="public-nav-toggle"
+              aria-label="Open navigation" aria-expanded="false">
+        {{ icon('menu', 20) }}
+      </button>
+
+      <nav class="vh-nav-links" id="public-nav-links" aria-label="Main navigation">
+        <a href="{{ url_for('website.landing') }}#features">Features</a>
+        <a href="{{ url_for('website.landing') }}#how-it-works">How it works</a>
+        <a href="{{ url_for('website.landing') }}#model-performance">Model performance</a>
+        <a href="{{ url_for('website.about') }}">About</a>
+        <a href="{{ url_for('website.help_page') }}">Help</a>
+      </nav>
+
+      <div class="vh-nav-actions">
+        {{ theme_toggle() }}
+        {% if current_user.is_authenticated %}
+          <a class="vh-btn vh-btn-primary vh-btn-sm" href="{{ url_for('website.dashboard') }}">
+            Open dashboard
+          </a>
+        {% else %}
+          <a class="vh-btn vh-btn-primary vh-btn-sm" href="{{ url_for('website.dashboard') }}">Open dashboard</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  {{ flash_messages() }}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="vh-footer">
+    <div class="vh-footer-inner">
+      <div class="footer-brand">
+        {{ logo(24, True, None, '') }}
+        <p>{{ brand_tagline }}</p>
+        <p class="footer-note">
+          AI-powered audio authenticity and deepfake detection platform.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h3>Product</h3>
+        <a href="{{ url_for('website.detect') }}">Detect audio</a>
+        <a href="{{ url_for('website.dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('website.model_page') }}">Model information</a>
+        <a href="{{ url_for('website.help_page') }}">Documentation</a>
+      </div>
+      <div class="footer-col">
+        <h3>Company</h3>
+        <a href="{{ url_for('website.about') }}">About</a>
+        <a href="{{ url_for('website.about') }}#responsible">Responsible use</a>
+        <a href="{{ url_for('website.about') }}#limitations">Limitations</a>
+        <a href="{{ url_for('website.help_page') }}#faq">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h3>Account</h3>
+        {% if current_user.is_authenticated %}
+          <a href="{{ url_for('website.profile') }}">Profile</a>
+          <a href="{{ url_for('website.settings') }}">Settings</a>
+          <a href="{{ url_for('website.history') }}">History</a>
+        {% else %}
+          <a href="{{ url_for('website.dashboard') }}">Dashboard</a>
+          <a href="{{ url_for('website.history') }}">History</a>
+          <a href="{{ url_for('website.help_page') }}">Get help</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="vh-footer-bottom">
+      <span>© {{ current_year }} VeriHuman. All rights reserved.</span>
+      <span>Automated detection is an estimate, not proof of authenticity.</span>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('website.static', filename='vendor/lucide.min.js') }}"></script>
+  <script src="{{ url_for('website.static', filename='js/app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

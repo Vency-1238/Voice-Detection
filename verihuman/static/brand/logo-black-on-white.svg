@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 80" role="img" aria-label="VeriHuman logo, black on white">
+  <rect width="260" height="80" rx="14" fill="#FFFFFF"/>
+  <g transform="translate(24,20)" fill="none">
+    <path d="M12 1.6 22.4 5.4V13c0 5.6-4.1 9.6-10.4 11C5.7 22.6 1.6 18.6 1.6 13V5.4L12 1.6Z"
+          stroke="#09090B" stroke-width="1.7" stroke-linejoin="round"/>
+    <path d="M6.4 11.2v1.6M9 8.8v4M11.6 6.4v6.4M14.2 8.8v4M16.8 11.2v1.6"
+          stroke="#09090B" stroke-width="1.7" stroke-linecap="round"/>
+  </g>
+  <text x="56" y="46" fill="#09090B" font-family="Inter, 'Segoe UI', system-ui, sans-serif"
+        font-size="26" font-weight="600" letter-spacing="-0.8">VeriHuman</text>
+  <text x="57" y="61" fill="#71717A" font-family="Inter, 'Segoe UI', system-ui, sans-serif"
+        font-size="8.5" letter-spacing="0.4">TRUST EVERY VOICE. VERIFY EVERY SOUND.</text>
+</svg>

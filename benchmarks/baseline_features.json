@@ -1,0 +1,21 @@
+{
+  "files": 120,
+  "seconds_per_file": 4.09,
+  "stage_ms": {
+    "librosa.load (decode 16k)": 1.345,
+    "soundfile.read (decode)": 1.195,
+    "mfcc(n_mfcc=20)": 6.513,
+    "delta + delta-width": 1.016,
+    "spectral_centroid": 2.782,
+    "spectral_bandwidth": 4.519,
+    "spectral_rolloff": 2.767,
+    "zero_crossing_rate": 1.357,
+    "rms": 1.722,
+    "stft once + centroid/bw/rolloff": 4.328,
+    "extract_features_from_waveform": 14.31
+  },
+  "resample_44k_to_16k_ms": 0.691,
+  "end_to_end_ms": 15.66,
+  "files_per_second": 63.88,
+  "projected_train_split_minutes": 6.6
+}
